@@ -36,9 +36,8 @@ const tones = Object.keys(toneMap) as (keyof typeof toneMap)[];
 
 export default function PodcastGenerator() {
   const [text, setText] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-  const [file, setFile] = useState<File | null>(null);
+  const [, setFile] = useState<File | null>(null);
   const [voice, setVoice] = useState<VoiceName | "">("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);

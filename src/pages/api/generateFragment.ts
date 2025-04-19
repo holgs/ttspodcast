@@ -1,4 +1,3 @@
-// src/pages/api/generateFragment.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { OpenAI } from "openai";
 import { toneMap } from "@/lib/toneTypes";
@@ -27,7 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     model: "gpt-4o-mini-tts",
     input: text,
     voice,
-    format: "mp3",
     speed: 1,
     ...(toneMap[tone] ? { prompt: toneMap[tone] } : {}),
   }); //  [oai_citation_attribution:0‡OpenAI Platform](https://platform.openai.com/docs/guides/audio/quickstart?audio-generation-quickstart-example=audio-in&lang=python&utm_source=chatgpt.com)

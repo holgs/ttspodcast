@@ -35,6 +35,8 @@ const tones = Object.keys(toneMap) as (keyof typeof toneMap)[];
 
 export default function PodcastGenerator() {
   const [text, setText] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const [file, setFile] = useState<File | null>(null);
   const [voice, setVoice] = useState<VoiceName | "">("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -118,6 +120,7 @@ export default function PodcastGenerator() {
 
     // trova l'inizio della riga corrente
     const before = text.slice(0, start);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const after = text.slice(end);
     const lineStart = before.lastIndexOf("\n") + 1;
     const lineEnd = text.indexOf("\n", start) === -1 ? text.length : text.indexOf("\n", start);

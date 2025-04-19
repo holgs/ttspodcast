@@ -1,6 +1,5 @@
-
-
  "use client";
+ import React from 'react';
  import { useEffect, useState } from "react";
  import { Sun, Moon } from "lucide-react";
  import { Button } from "@/components/ui/button";

@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 // Drop‑down per la selezione della voce narrante
 
 const voices = [

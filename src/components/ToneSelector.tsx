@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 import { toneMap, ToneKey } from "@/lib/toneTypes";
 
 export default function ToneSelector({

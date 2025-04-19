@@ -2,7 +2,6 @@
 import React from 'react';
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { parseTextWithTones } from "@/lib/parseTextWithTones";
 
 export default function TextDropZone({
   onParsed,

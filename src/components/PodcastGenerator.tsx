@@ -27,6 +27,8 @@ export default function PodcastGenerator() {
   const [, setFile] = useState<File | null>(null);
   const [voice, setVoice] = useState<VoiceName | "">("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [total, setTotal] = useState(0);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [fragments, setFragments] = useState<{ url: string; label: string }[]>([]);
   const [apiKey, setApiKey] = useState<string>(
@@ -53,9 +55,11 @@ export default function PodcastGenerator() {
     setFragments([]);
 
     const sections = parseTextWithTones(text);
+    setProgress(0);
+    setTotal(sections.length);
     const base64Parts: string[] = [];
 
-    for (const s of sections) {
+    for (const [idx, s] of sections.entries()) {
       const res = await fetch("/api/generateFragment", {
         method: "POST",
         headers: {
@@ -80,6 +84,7 @@ export default function PodcastGenerator() {
       base64Parts.push(
         btoa(String.fromCharCode(...new Uint8Array(buf))),
       );
+      setProgress(idx + 1);
     }
 
     const joinRes = await fetch("/api/combineAudio", {
@@ -96,6 +101,7 @@ export default function PodcastGenerator() {
     const url = URL.createObjectURL(finalBlob);
     setDownloadUrl(url);
     setIsGenerating(false);
+    setProgress(sections.length);
   }
 
   function applyToneTag(tone: keyof typeof toneMap) {
@@ -212,6 +218,20 @@ export default function PodcastGenerator() {
             >
               {isGenerating ? "Generazione..." : "Genera Podcast"}
             </Button>
+
+            {isGenerating && total > 0 && (
+              <div className="space-y-1">
+                <div className="w-full h-2 rounded-full bg-white/20 overflow-hidden">
+                  <div
+                    className="h-full bg-pink-600 transition-all"
+                    style={{ width: `${(progress / total) * 100}%` }}
+                  />
+                </div>
+                <p className="text-xs text-center text-white/80">
+                  {progress}/{total}
+                </p>
+              </div>
+            )}
 
             {(fragments.length > 0 || downloadUrl) && (
               <div className="space-y-2">

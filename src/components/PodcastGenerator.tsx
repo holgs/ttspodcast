@@ -42,6 +42,7 @@ export default function PodcastGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [fragments, setFragments] = useState<{ url: string; label: string }[]>([]);
+  const [podcastName, setPodcastName] = useState<string>("podcast");
   const [apiKey, setApiKey] = useState<string>(
     typeof window !== "undefined" ? localStorage.getItem("OPENAI_KEY") ?? "" : "",
   );
@@ -98,7 +99,7 @@ export default function PodcastGenerator() {
     const joinRes = await fetch("/api/combineAudio", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ parts: base64Parts }),
+      body: JSON.stringify({ parts: base64Parts, name: podcastName }),
     });
     if (!joinRes.ok) {
       console.error(await joinRes.text());
@@ -163,6 +164,18 @@ export default function PodcastGenerator() {
                   setApiKey(e.target.value);
                   localStorage.setItem("OPENAI_KEY", e.target.value);
                 }}
+                className="mt-1 bg-white/10 border border-white/20 backdrop-blur-md text-white"
+              />
+            </div>
+
+            {/* podcast name */}
+            <div>
+              <Label className="text-sm">Nome podcast</Label>
+              <Input
+                type="text"
+                placeholder="titolo"
+                value={podcastName}
+                onChange={(e) => setPodcastName(e.target.value)}
                 className="mt-1 bg-white/10 border border-white/20 backdrop-blur-md text-white"
               />
             </div>
@@ -235,7 +248,10 @@ export default function PodcastGenerator() {
                     className="w-full"
                     asChild
                   >
-                    <a href={f.url} download={`fragment-${i + 1}.mp3`}>
+                    <a
+                      href={f.url}
+                      download={`${podcastName}-fragment-${i + 1}.mp3`}
+                    >
                       Download frammento {i + 1}
                     </a>
                   </Button>
@@ -243,7 +259,7 @@ export default function PodcastGenerator() {
 
                 {downloadUrl && (
                   <Button variant="default" className="w-full" asChild>
-                    <a href={downloadUrl} download="podcast.mp3">
+                    <a href={downloadUrl} download={`${podcastName}.mp3`}>
                       Download podcast completo
                     </a>
                   </Button>

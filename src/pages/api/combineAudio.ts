@@ -12,7 +12,7 @@ ffmpeg.setFfmpegPath(ffmpegPath!);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).end();
-  const { parts }: { parts: string[] } = req.body; // array di base64
+  const { parts, name }: { parts: string[]; name?: string } = req.body; // array di base64
 
   // salva parti su /tmp
   const tmpDir = await fs.mkdtemp(join(os.tmpdir(), "tts-"));
@@ -39,6 +39,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const final = await fs.readFile(outPath);
   res.setHeader("Content-Type", "audio/mpeg");
-  res.setHeader("Content-Disposition", "attachment; filename=podcast.mp3");
+  const safeName = name && name.trim() ? name.trim() : "podcast";
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename=${safeName}.mp3`,
+  );
   res.send(final);
 }

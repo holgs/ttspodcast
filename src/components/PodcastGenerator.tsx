@@ -15,22 +15,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { parseTextWithTones } from "@/lib/parseTextWithTones";
 import { toneMap } from "@/lib/toneTypes";
-import type { VoiceName } from "@/components/VoiceSelector";
+import { voices, type VoiceName } from "@/lib/voices";
 import ThemeToggle from "@/components/ThemeToggle";
 
-const voices: VoiceName[] = [
-  "alloy",
-  "ash",
-  "ballad",
-  "coral",
-  "echo",
-  "fable",
-  "onyx",
-  "nova",
-  "sage",
-  "shimmer",
-  "verse",
-];
 
 const tones = Object.keys(toneMap) as (keyof typeof toneMap)[];
 
